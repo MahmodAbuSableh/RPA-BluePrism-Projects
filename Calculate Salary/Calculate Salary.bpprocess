@@ -1,0 +1,237 @@
+﻿<process name="Assignment4" version="1.0" bpversion="7.2.1.7446" narrative="" byrefcollection="true" processrunningmessage="" disableversioning="false" preferredid="71379807-08b7-48ab-b3b2-504467316419">
+  <view>
+    <camerax>21</camerax>
+    <cameray>21</cameray>
+    <zoom version="2">1.25</zoom>
+  </view>
+  <preconditions />
+  <endpoint narrative="" />
+  <subsheet subsheetid="47e9978c-60ef-4c1b-a421-01b00ea9ab55" type="Normal" published="False">
+    <name>Read Data</name>
+    <view>
+      <camerax>0</camerax>
+      <cameray>0</cameray>
+      <zoom version="2">1.25</zoom>
+    </view>
+  </subsheet>
+  <subsheet subsheetid="8ea1e021-7982-4afc-b66c-998d874fd216" type="Normal" published="False">
+    <name>State Values</name>
+    <view>
+      <camerax>0</camerax>
+      <cameray>123</cameray>
+      <zoom version="2">1.25</zoom>
+    </view>
+  </subsheet>
+  <stage stageid="dda005ec-a0be-47a1-b717-51e37cc2e5d1" name="Start" type="Start">
+    <display x="15" y="-105" />
+    <onsuccess>e3c2289e-eadc-455b-a10a-92378f529adb</onsuccess>
+  </stage>
+  <stage stageid="f3f49cc6-5873-477f-9034-d93f9764540c" name="End" type="End">
+    <display x="15" y="30" />
+  </stage>
+  <stage stageid="94002428-b5e8-4cd2-9528-e85abaa62cfc" name="Stage1" type="ProcessInfo">
+    <display x="-195" y="-105" w="150" h="90" />
+  </stage>
+  <stage stageid="eedc9a74-1b61-4a81-9ac4-659dbb3dd7af" name="Read Data" type="SubSheetInfo">
+    <subsheetid>47e9978c-60ef-4c1b-a421-01b00ea9ab55</subsheetid>
+    <display x="-195" y="-105" w="150" h="90" />
+  </stage>
+  <stage stageid="01da9471-40d1-4c3d-97d4-1845c9d99143" name="Start" type="Start">
+    <subsheetid>47e9978c-60ef-4c1b-a421-01b00ea9ab55</subsheetid>
+    <display x="15" y="-105" />
+    <inputs>
+      <input type="text" name="File Name" stage="File Name" />
+    </inputs>
+    <onsuccess>addf4eb7-ba22-412d-83c5-e7d75abb78a6</onsuccess>
+  </stage>
+  <stage stageid="bf913644-2f97-490d-80da-3399b46d1123" name="End" type="End">
+    <subsheetid>47e9978c-60ef-4c1b-a421-01b00ea9ab55</subsheetid>
+    <display x="15" y="75" />
+  </stage>
+  <stage stageid="addf4eb7-ba22-412d-83c5-e7d75abb78a6" name="MS Excel VBO::Create Instance" type="Action">
+    <subsheetid>47e9978c-60ef-4c1b-a421-01b00ea9ab55</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="15" y="-60" />
+    <inputs>
+      <input type="flag" name="Enable Events" friendlyname="Enable Events" narrative="Flag to indicate that events should be enabled / disabled on the attached instance - defaulted to True" expr="" />
+    </inputs>
+    <outputs>
+      <output type="number" name="handle" friendlyname="handle" narrative="An integer which can be used to identify the created instance in subsequent actions" stage="handle" />
+    </outputs>
+    <onsuccess>7e288681-f0a4-4f77-acba-e69656313cb6</onsuccess>
+    <resource object="MS Excel VBO" action="Create Instance" />
+  </stage>
+  <stage stageid="7ce0faf0-edbe-41bf-aed4-99153f75e218" name="handle" type="Data">
+    <subsheetid>47e9978c-60ef-4c1b-a421-01b00ea9ab55</subsheetid>
+    <display x="90" y="-60" />
+    <datatype>number</datatype>
+    <initialvalue />
+    <alwaysinit />
+  </stage>
+  <stage stageid="7e288681-f0a4-4f77-acba-e69656313cb6" name="MS Excel VBO::Open Workbook" type="Action">
+    <subsheetid>47e9978c-60ef-4c1b-a421-01b00ea9ab55</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="15" y="-15" />
+    <inputs>
+      <input type="number" name="handle" friendlyname="handle" narrative="The integer handle identifying the instance on which the required workbook should be opened. The default of zero indicates the currently active instance." expr="[handle]" />
+      <input type="text" name="File name" friendlyname="File name" narrative="The path and name of the file which should be opened." expr="[File Name]" />
+    </inputs>
+    <outputs>
+      <output type="text" name="Workbook Name" friendlyname="Workbook Name" narrative="The name used by Excel to identify the workbook - usually this is the file name (without the path)." stage="Workbook Name" />
+    </outputs>
+    <onsuccess>829d57d4-5e5b-477e-b07f-69428e9e1390</onsuccess>
+    <resource object="MS Excel VBO" action="Open Workbook" />
+  </stage>
+  <stage stageid="829d57d4-5e5b-477e-b07f-69428e9e1390" name="MS Excel VBO::Get Worksheet As Collection" type="Action">
+    <subsheetid>47e9978c-60ef-4c1b-a421-01b00ea9ab55</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="15" y="30" />
+    <inputs>
+      <input type="number" name="handle" friendlyname="handle" narrative="The integer handle identifying the instance on which the worksheet which should be retrieved resides. The default of zero indicates the currently active instance." expr="[handle]" />
+      <input type="text" name="Workbook Name" friendlyname="Workbook Name" narrative="The name of the workbook which contains the sheet required. The default empty text indicates the currently active workbook on the specified instance." expr="[Workbook Name]" />
+      <input type="text" name="Worksheet Name" friendlyname="Worksheet Name" narrative="The name of the worksheet within the specified workbook which should be written to a collection. The default empty text indicates the currently active worksheet within the specified workbook." expr="" />
+    </inputs>
+    <outputs>
+      <output type="collection" name="Data" friendlyname="Data" narrative="The collection containing the data from the specified worksheet - the column IDs will be gleaned from the first row on the sheet being retrieved." stage="Data" />
+    </outputs>
+    <onsuccess>bf913644-2f97-490d-80da-3399b46d1123</onsuccess>
+    <resource object="MS Excel VBO" action="Get Worksheet As Collection" />
+  </stage>
+  <stage stageid="26b6f980-7763-46f9-9d89-30b5fd53381c" name="Workbook Name" type="Data">
+    <subsheetid>47e9978c-60ef-4c1b-a421-01b00ea9ab55</subsheetid>
+    <display x="90" y="-15" />
+    <datatype>text</datatype>
+    <initialvalue />
+    <alwaysinit />
+  </stage>
+  <stage stageid="5e2968f0-ea47-4de9-bab4-bc9746388e19" name="Data" type="Collection">
+    <subsheetid>47e9978c-60ef-4c1b-a421-01b00ea9ab55</subsheetid>
+    <display x="90" y="30" />
+    <datatype>collection</datatype>
+    <alwaysinit />
+  </stage>
+  <stage stageid="e3c2289e-eadc-455b-a10a-92378f529adb" name="Read Data" type="SubSheet">
+    <loginhibit onsuccess="true" />
+    <display x="15" y="-60" />
+    <inputs>
+      <input type="text" name="File Name" friendlyname="File Name" expr="[File Name]" />
+    </inputs>
+    <onsuccess>05986891-fb45-400b-8423-81d8ffb40ca0</onsuccess>
+    <processid>47e9978c-60ef-4c1b-a421-01b00ea9ab55</processid>
+  </stage>
+  <stage stageid="af08d2c2-ad36-41ba-8139-eba30c715360" name="State Values" type="SubSheetInfo">
+    <subsheetid>8ea1e021-7982-4afc-b66c-998d874fd216</subsheetid>
+    <display x="-195" y="-105" w="150" h="90" />
+  </stage>
+  <stage stageid="8ada0693-f221-486f-87b3-ac4d5734323d" name="State" type="Data">
+    <subsheetid>8ea1e021-7982-4afc-b66c-998d874fd216</subsheetid>
+    <display x="-165" y="75" />
+    <datatype>text</datatype>
+    <initialvalue />
+    <private />
+    <alwaysinit />
+  </stage>
+  <stage stageid="05986891-fb45-400b-8423-81d8ffb40ca0" name="State Values" type="SubSheet">
+    <loginhibit onsuccess="true" />
+    <display x="15" y="-15" />
+    <onsuccess>f3f49cc6-5873-477f-9034-d93f9764540c</onsuccess>
+    <processid>8ea1e021-7982-4afc-b66c-998d874fd216</processid>
+  </stage>
+  <stage stageid="f2176cb7-373d-4965-8100-a98f0438c1ef" name="File Name" type="Data">
+    <loginhibit onsuccess="true" />
+    <display x="-120" y="0" />
+    <datatype>text</datatype>
+    <initialvalue xml:space="preserve">C:\Users\mahmo\Downloads\Odd-Even.xlsx</initialvalue>
+    <alwaysinit />
+  </stage>
+  <stage stageid="5d7033a7-051e-4bbb-868e-2cee4164026b" name="Start" type="Start">
+    <subsheetid>8ea1e021-7982-4afc-b66c-998d874fd216</subsheetid>
+    <display x="0" y="-150" />
+    <onsuccess>ee0a1667-225d-40b0-9514-8dd7fd85a0fc</onsuccess>
+  </stage>
+  <stage stageid="876b2149-d260-4ea4-8da5-d5fbcf86ef68" name="End" type="End">
+    <subsheetid>8ea1e021-7982-4afc-b66c-998d874fd216</subsheetid>
+    <display x="0" y="270" />
+  </stage>
+  <stage stageid="9ce7bb7f-2b05-4732-96cf-59a7a2e6d701" name="MS Excel VBO::Set Cell Value" type="Action">
+    <subsheetid>8ea1e021-7982-4afc-b66c-998d874fd216</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="0" y="45" />
+    <inputs>
+      <input type="number" name="handle" friendlyname="handle" narrative="The integer handle identifying the instance on which the required cell value should be set. The default of zero indicates the currently active instance." expr="[handle]" />
+      <input type="text" name="Cell Reference" friendlyname="Cell Reference" narrative="The reference on the speficied sheet identifying the cell which should be set." expr="&quot;F&quot;&amp;[Counter]" />
+      <input type="text" name="Value" friendlyname="Value" narrative="The value to which the specified cell should be set." expr="[State]" />
+    </inputs>
+    <onsuccess>1423b3c3-73d1-4ee5-a4a6-39659a557e46</onsuccess>
+    <resource object="MS Excel VBO" action="Set Cell Value" />
+  </stage>
+  <stage stageid="83be5289-31ae-4f07-82fa-e06c5455e2c9" name="Amount States::Amount State" type="Action">
+    <subsheetid>8ea1e021-7982-4afc-b66c-998d874fd216</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="0" y="-15" />
+    <inputs>
+      <input type="number" name="Amount" friendlyname="Amount" expr="[Data.Amount]" />
+    </inputs>
+    <outputs>
+      <output type="text" name="State" friendlyname="State" stage="State" />
+    </outputs>
+    <onsuccess>9ce7bb7f-2b05-4732-96cf-59a7a2e6d701</onsuccess>
+    <resource object="Amount States" action="Amount State" />
+  </stage>
+  <stage stageid="ee0a1667-225d-40b0-9514-8dd7fd85a0fc" name="Show" type="Action">
+    <subsheetid>8ea1e021-7982-4afc-b66c-998d874fd216</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="0" y="-105" />
+    <inputs>
+      <input type="number" name="handle" friendlyname="handle" narrative="The integer handle identifying the instance which should have its window displayed. The default of zero indicates the currently active instance." expr="[handle]" />
+    </inputs>
+    <onsuccess>6f2e6df5-a769-490b-896e-b6919a641afb</onsuccess>
+    <resource object="MS Excel VBO" action="Show" />
+  </stage>
+  <stage stageid="6f2e6df5-a769-490b-896e-b6919a641afb" name="Data Loop " type="LoopStart">
+    <subsheetid>8ea1e021-7982-4afc-b66c-998d874fd216</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="0" y="-60" />
+    <onsuccess>83be5289-31ae-4f07-82fa-e06c5455e2c9</onsuccess>
+    <groupid>d9b5bbad-94e6-4575-8130-764f31b1e148</groupid>
+    <looptype>ForEach</looptype>
+    <loopdata>Data</loopdata>
+  </stage>
+  <stage stageid="556f7ae9-3ef4-422a-9d35-ba2f94013c50" name="Data Loop " type="LoopEnd">
+    <subsheetid>8ea1e021-7982-4afc-b66c-998d874fd216</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="0" y="180" />
+    <onsuccess>bd0bc96a-7e5b-4d61-82f1-fc59434c9fd1</onsuccess>
+    <groupid>d9b5bbad-94e6-4575-8130-764f31b1e148</groupid>
+  </stage>
+  <stage stageid="83fc5ae6-5aea-48cf-9ab2-0ad819e8a98f" name="Counter" type="Data">
+    <subsheetid>8ea1e021-7982-4afc-b66c-998d874fd216</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="-165" y="135" />
+    <datatype>number</datatype>
+    <initialvalue>2</initialvalue>
+    <private />
+    <alwaysinit />
+  </stage>
+  <stage stageid="1423b3c3-73d1-4ee5-a4a6-39659a557e46" name="Increasing Counter" type="Calculation">
+    <subsheetid>8ea1e021-7982-4afc-b66c-998d874fd216</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="0" y="90" />
+    <onsuccess>90ac917e-efee-47ce-b542-b84f2362fbdc</onsuccess>
+    <calculation expression="[Counter]+1" stage="Counter" />
+  </stage>
+  <stage stageid="bd0bc96a-7e5b-4d61-82f1-fc59434c9fd1" name="Close All Instances" type="Action">
+    <subsheetid>8ea1e021-7982-4afc-b66c-998d874fd216</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="0" y="225" />
+    <onsuccess>876b2149-d260-4ea4-8da5-d5fbcf86ef68</onsuccess>
+    <resource object="MS Excel VBO" action="Close All Instances" />
+  </stage>
+  <stage stageid="90ac917e-efee-47ce-b542-b84f2362fbdc" name="Save Current Workbook" type="Action">
+    <subsheetid>8ea1e021-7982-4afc-b66c-998d874fd216</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="0" y="135" />
+    <onsuccess>556f7ae9-3ef4-422a-9d35-ba2f94013c50</onsuccess>
+    <resource object="MS Excel VBO" action="Save Current Workbook" />
+  </stage>
+</process>
