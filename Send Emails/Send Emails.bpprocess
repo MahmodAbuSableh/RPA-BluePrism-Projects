@@ -1,0 +1,480 @@
+﻿<process name="Assignment2" version="1.0" bpversion="7.2.1.7446" narrative="Read Excel file and save it as collection.&#xD;&#xA;Loop through element and verify the email as templet using regular expression as : {First Name} . {LastName} @cyborg-automation.com .&#xD;&#xA;If the email is match correctly add it to the Match group.&#xD;&#xA;If the email is not match, add to not match group and send email as : (“ Dear”&amp; {Name }&amp;” your email is not following the best practice “&amp;{Email}).&#xD;&#xA;We will check your inbox to see the mails.&#xD;&#xA;Use outlook , excel ,String VBO for regular expression also needed." byrefcollection="true" processrunningmessage="" disableversioning="false" preferredid="822765e5-f536-4b97-a21d-a8772654a6f8">
+  <view>
+    <camerax>0</camerax>
+    <cameray>0</cameray>
+    <zoom version="2">1.25</zoom>
+  </view>
+  <preconditions />
+  <endpoint narrative="" />
+  <subsheet subsheetid="9310e922-1c03-48e9-a675-9a54a0ced445" type="Normal" published="False">
+    <name>Verify Emails</name>
+    <view>
+      <camerax>0</camerax>
+      <cameray>21</cameray>
+      <zoom version="2">1.25</zoom>
+    </view>
+  </subsheet>
+  <subsheet subsheetid="7a17f455-b27a-402c-8c15-d519120e9753" type="Normal" published="False">
+    <name>Send Email</name>
+    <view>
+      <camerax>0</camerax>
+      <cameray>11</cameray>
+      <zoom version="2">1.25</zoom>
+    </view>
+  </subsheet>
+  <subsheet subsheetid="5fceb649-0e06-4f2e-9938-11b77f1ab73e" type="Normal" published="False">
+    <name>Page 3</name>
+    <view>
+      <camerax>0</camerax>
+      <cameray>33</cameray>
+      <zoom version="2">1.25</zoom>
+    </view>
+  </subsheet>
+  <stage stageid="9b75cbee-21e4-4cc7-8329-352ca623d95a" name="Start" type="Start">
+    <display x="15" y="-150" />
+    <onsuccess>8913f68a-92a4-4013-8fd0-f46f07a1b343</onsuccess>
+  </stage>
+  <stage stageid="fcc11254-ea19-4fd8-9056-9f0f5992ab36" name="End" type="End">
+    <display x="15" y="195" />
+  </stage>
+  <stage stageid="7560ec30-099b-48ac-84fb-0f44d1fc2478" name="Stage1" type="ProcessInfo">
+    <display x="-195" y="-105" w="150" h="90" />
+  </stage>
+  <stage stageid="2313640a-e431-4114-bc2f-53c2f2a7042c" name="Data Set" type="Collection">
+    <display x="195" y="15" />
+    <datatype>collection</datatype>
+    <alwaysinit />
+    <collectioninfo>
+      <field name="Name" type="text" />
+      <field name="Email" type="text" />
+    </collectioninfo>
+  </stage>
+  <stage stageid="8913f68a-92a4-4013-8fd0-f46f07a1b343" name="Create Instance" type="Action">
+    <loginhibit onsuccess="true" />
+    <display x="15" y="-105" />
+    <inputs>
+      <input type="flag" name="Enable Events" friendlyname="Enable Events" narrative="Flag to indicate that events should be enabled / disabled on the attached instance - defaulted to True" expr="" />
+    </inputs>
+    <outputs>
+      <output type="number" name="handle" friendlyname="handle" narrative="An integer which can be used to identify the created instance in subsequent actions" stage="handle" />
+    </outputs>
+    <onsuccess>a71c6c24-30d1-4aaf-8f2b-fcfcd8631552</onsuccess>
+    <resource object="MS Excel VBO" action="Create Instance" />
+  </stage>
+  <stage stageid="656769f8-5b12-4d78-8135-8f4d6772fe1c" name="handle" type="Data">
+    <display x="195" y="-105" />
+    <datatype>number</datatype>
+    <initialvalue />
+    <private />
+    <alwaysinit />
+  </stage>
+  <stage stageid="a71c6c24-30d1-4aaf-8f2b-fcfcd8631552" name="Open WorkBook" type="Action">
+    <loginhibit onsuccess="true" />
+    <display x="15" y="-60" />
+    <inputs>
+      <input type="number" name="handle" friendlyname="handle" narrative="The integer handle identifying the instance on which the required workbook should be opened. The default of zero indicates the currently active instance." expr="[handle]" />
+      <input type="text" name="File name" friendlyname="File name" narrative="The path and name of the file which should be opened." expr="&quot;F:\My learnings\RPA\Assignments\A2\Task2.xlsx&quot;" />
+    </inputs>
+    <outputs>
+      <output type="text" name="Workbook Name" friendlyname="Workbook Name" narrative="The name used by Excel to identify the workbook - usually this is the file name (without the path)." stage="Workbook Name" />
+    </outputs>
+    <onsuccess>b0f940bb-f39d-489b-981a-7669f5c5bc6a</onsuccess>
+    <resource object="MS Excel VBO" action="Open Workbook" />
+  </stage>
+  <stage stageid="c32abac3-42b6-4612-9b18-3bdad7150815" name="Workbook Name" type="Data">
+    <display x="195" y="-45" />
+    <datatype>text</datatype>
+    <initialvalue />
+    <private />
+    <alwaysinit />
+  </stage>
+  <stage stageid="b0f940bb-f39d-489b-981a-7669f5c5bc6a" name="Get Worksheet as a Collection" type="Action">
+    <loginhibit onsuccess="true" />
+    <display x="15" y="-15" />
+    <inputs>
+      <input type="number" name="handle" friendlyname="handle" narrative="The integer handle identifying the instance on which the worksheet which should be retrieved resides. The default of zero indicates the currently active instance." expr="[handle]" />
+      <input type="text" name="Workbook Name" friendlyname="Workbook Name" narrative="The name of the workbook which contains the sheet required. The default empty text indicates the currently active workbook on the specified instance." expr="[Workbook Name]" />
+      <input type="text" name="Worksheet Name" friendlyname="Worksheet Name" narrative="The name of the worksheet within the specified workbook which should be written to a collection. The default empty text indicates the currently active worksheet within the specified workbook." expr="" />
+    </inputs>
+    <outputs>
+      <output type="collection" name="Data" friendlyname="Data" narrative="The collection containing the data from the specified worksheet - the column IDs will be gleaned from the first row on the sheet being retrieved." stage="Data Set" />
+    </outputs>
+    <onsuccess>1c2b2cf5-6dba-43fd-94e5-d62c7e0a1270</onsuccess>
+    <resource object="MS Excel VBO" action="Get Worksheet As Collection" />
+  </stage>
+  <stage stageid="1c2b2cf5-6dba-43fd-94e5-d62c7e0a1270" name="Close All Instances" type="Action">
+    <loginhibit onsuccess="true" />
+    <display x="15" y="30" />
+    <onsuccess>f6d0ef31-1c57-4ec0-8404-197832cc0a6c</onsuccess>
+    <resource object="MS Excel VBO" action="Close All Instances" />
+  </stage>
+  <stage stageid="e6eabfc2-1fc1-4229-a096-1352cf9b958c" name="Verify Emails" type="SubSheetInfo">
+    <subsheetid>9310e922-1c03-48e9-a675-9a54a0ced445</subsheetid>
+    <display x="-195" y="-105" w="150" h="90" />
+  </stage>
+  <stage stageid="bed50e96-66d1-4673-9c08-a42b1c6fcdc5" name="Start" type="Start">
+    <subsheetid>9310e922-1c03-48e9-a675-9a54a0ced445</subsheetid>
+    <display x="15" y="-150" />
+    <onsuccess>c7586a33-6cec-4633-9705-34e8b79e2704</onsuccess>
+  </stage>
+  <stage stageid="a6c7e34c-34a1-419f-aaae-e8ea9e41ce12" name="End" type="End">
+    <subsheetid>9310e922-1c03-48e9-a675-9a54a0ced445</subsheetid>
+    <display x="15" y="210" />
+    <outputs>
+      <output type="collection" name="Match group" stage="Match Group" />
+      <output type="collection" name="Not match group" stage="Not Match Group" />
+    </outputs>
+  </stage>
+  <stage stageid="f6d0ef31-1c57-4ec0-8404-197832cc0a6c" name="Verify Emails" type="SubSheet">
+    <loginhibit onsuccess="true" />
+    <display x="15" y="75" />
+    <outputs>
+      <output type="collection" name="Match group" friendlyname="Match group" stage="Match Group" />
+      <output type="collection" name="Not match group" friendlyname="Not match group" stage="Not Match Group" />
+    </outputs>
+    <onsuccess>4b660963-5bef-4d91-86d7-bf10f1d4844e</onsuccess>
+    <processid>9310e922-1c03-48e9-a675-9a54a0ced445</processid>
+  </stage>
+  <stage stageid="9049e306-87e4-4d1c-bf38-b21b163952e7" name="Send Email" type="SubSheetInfo">
+    <subsheetid>7a17f455-b27a-402c-8c15-d519120e9753</subsheetid>
+    <display x="-195" y="-105" w="150" h="90" />
+  </stage>
+  <stage stageid="4bcd7222-3cf6-413b-9f49-247a4ece0c53" name="Start" type="Start">
+    <subsheetid>7a17f455-b27a-402c-8c15-d519120e9753</subsheetid>
+    <display x="15" y="-105" />
+    <inputs>
+      <input type="collection" name="Not match Group" stage="Not Match Group" />
+    </inputs>
+    <onsuccess>62f960db-9300-42e9-afff-8439253d131c</onsuccess>
+  </stage>
+  <stage stageid="a4085a30-8e30-46ba-8c11-35b09ac9850d" name="End" type="End">
+    <subsheetid>7a17f455-b27a-402c-8c15-d519120e9753</subsheetid>
+    <display x="15" y="90" />
+  </stage>
+  <stage stageid="4b660963-5bef-4d91-86d7-bf10f1d4844e" name="Send Email" type="SubSheet">
+    <loginhibit onsuccess="true" />
+    <display x="15" y="135" />
+    <inputs>
+      <input type="collection" name="Not match Group" friendlyname="Not match Group" expr="[Not Match Group]" />
+    </inputs>
+    <onsuccess>fcc11254-ea19-4fd8-9056-9f0f5992ab36</onsuccess>
+    <processid>7a17f455-b27a-402c-8c15-d519120e9753</processid>
+  </stage>
+  <stage stageid="c7586a33-6cec-4633-9705-34e8b79e2704" name="Emails Loop Start" type="LoopStart">
+    <subsheetid>9310e922-1c03-48e9-a675-9a54a0ced445</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="15" y="-105" />
+    <onsuccess>20ccd8b8-907e-41c8-8f28-5fb3ccb8b023</onsuccess>
+    <groupid>86c32ab1-6e26-4087-b173-306baa7f08ff</groupid>
+    <looptype>ForEach</looptype>
+    <loopdata>Data Set</loopdata>
+  </stage>
+  <stage stageid="46841e4b-6c97-42e1-99ac-3b6782800994" name="Emails Loop End" type="LoopEnd">
+    <subsheetid>9310e922-1c03-48e9-a675-9a54a0ced445</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="15" y="150" />
+    <onsuccess>a6c7e34c-34a1-419f-aaae-e8ea9e41ce12</onsuccess>
+    <groupid>86c32ab1-6e26-4087-b173-306baa7f08ff</groupid>
+  </stage>
+  <stage stageid="d70fb866-2ed3-42a5-97ff-4e7da5d0d89f" name="Match Correctly ?" type="Decision">
+    <subsheetid>9310e922-1c03-48e9-a675-9a54a0ced445</subsheetid>
+    <display x="15" y="0" />
+    <decision expression="[Matched]=True" />
+    <ontrue>608e9d3d-07ba-41b5-87bb-89177a3753d3</ontrue>
+    <onfalse>2b8bf64b-ac18-4701-bf4d-335af775bd4c</onfalse>
+  </stage>
+  <stage stageid="bd992d9d-d12a-4f9a-9e94-7c1e37b37857" name="Match Group" type="Collection">
+    <subsheetid>9310e922-1c03-48e9-a675-9a54a0ced445</subsheetid>
+    <display x="-120" y="90" />
+    <datatype>collection</datatype>
+    <private />
+    <alwaysinit />
+    <collectioninfo>
+      <field name="Name" type="text" />
+      <field name="Email" type="text" />
+    </collectioninfo>
+  </stage>
+  <stage stageid="7acf292f-9e5f-44a5-b62d-f44d84b1b721" name="Not Match Group" type="Collection">
+    <subsheetid>9310e922-1c03-48e9-a675-9a54a0ced445</subsheetid>
+    <display x="150" y="90" />
+    <datatype>collection</datatype>
+    <private />
+    <alwaysinit />
+    <collectioninfo>
+      <field name="Name" type="text" />
+      <field name="Email" type="text" />
+    </collectioninfo>
+  </stage>
+  <stage stageid="608e9d3d-07ba-41b5-87bb-89177a3753d3" name="Add Email to Match Group" type="Action">
+    <subsheetid>9310e922-1c03-48e9-a675-9a54a0ced445</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="-45" y="60" />
+    <inputs>
+      <input type="text" name="Collection Name" friendlyname="Collection Name" narrative="The name of the collection to act upon" expr="&quot;Match Group&quot;" />
+    </inputs>
+    <onsuccess>04290706-1b43-4b8c-893d-05d2821caaaf</onsuccess>
+    <resource object="Blueprism.AutomateProcessCore.clsCollectionActions" action="Add Row" />
+  </stage>
+  <stage stageid="2b8bf64b-ac18-4701-bf4d-335af775bd4c" name="Add Email to Not Match Group" type="Action">
+    <subsheetid>9310e922-1c03-48e9-a675-9a54a0ced445</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="75" y="60" />
+    <inputs>
+      <input type="text" name="Collection Name" friendlyname="Collection Name" narrative="The name of the collection to act upon" expr="&quot;Not Match Group&quot;" />
+    </inputs>
+    <onsuccess>22c3ca3c-4fee-4ce1-af82-9d4dd3e18730</onsuccess>
+    <resource object="Blueprism.AutomateProcessCore.clsCollectionActions" action="Add Row" />
+  </stage>
+  <stage stageid="20ccd8b8-907e-41c8-8f28-5fb3ccb8b023" name="Utiliy-String::Text Regex Match" type="Action">
+    <subsheetid>9310e922-1c03-48e9-a675-9a54a0ced445</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="15" y="-45" />
+    <inputs>
+      <input type="text" name="Regex Pattern" friendlyname="Regex Pattern" narrative="The regex pattern to apply" expr="&quot;[A-Za-z]+\.+[A-Za-z]+@cyborg-automation.com&quot;" />
+      <input type="text" name="Target String" friendlyname="Target String" narrative="The target string to which apply the pattern and extract values" expr="[Data Set.Email]" />
+    </inputs>
+    <outputs>
+      <output type="flag" name="Matched?" friendlyname="Matched?" narrative="Whether or not the regex match" stage="Matched" />
+    </outputs>
+    <onsuccess>d70fb866-2ed3-42a5-97ff-4e7da5d0d89f</onsuccess>
+    <resource object="Utility - Strings" action="Test Regex Match" />
+  </stage>
+  <stage stageid="8d467892-756f-4d6a-9336-0eb1e55b9f14" name="Matched" type="Data">
+    <subsheetid>9310e922-1c03-48e9-a675-9a54a0ced445</subsheetid>
+    <display x="105" y="-45" />
+    <datatype>flag</datatype>
+    <initialvalue />
+    <private />
+    <alwaysinit />
+  </stage>
+  <stage stageid="04290706-1b43-4b8c-893d-05d2821caaaf" name="Add Email To Match Group" type="MultipleCalculation">
+    <subsheetid>9310e922-1c03-48e9-a675-9a54a0ced445</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="-45" y="105" />
+    <onsuccess>6376a6c0-3e18-4c3b-baf6-ffea3ef76d31</onsuccess>
+    <steps>
+      <calculation expression="[Data Set.Name]" stage="Match Group.Name" />
+      <calculation expression="[Data Set.Email]" stage="Match Group.Email" />
+    </steps>
+  </stage>
+  <stage stageid="22c3ca3c-4fee-4ce1-af82-9d4dd3e18730" name="Add Email To Not Match Group" type="MultipleCalculation">
+    <subsheetid>9310e922-1c03-48e9-a675-9a54a0ced445</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="75" y="105" />
+    <onsuccess>0b371a34-c03f-46ad-b810-d709fdb3a5bf</onsuccess>
+    <steps>
+      <calculation expression="[Data Set.Name]" stage="Not Match Group.Name" />
+      <calculation expression="[Data Set.Email]" stage="Not Match Group.Email" />
+    </steps>
+  </stage>
+  <stage stageid="6376a6c0-3e18-4c3b-baf6-ffea3ef76d31" name="Anchor1" type="Anchor">
+    <subsheetid>9310e922-1c03-48e9-a675-9a54a0ced445</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="-45" y="150" w="10" h="10" />
+    <onsuccess>46841e4b-6c97-42e1-99ac-3b6782800994</onsuccess>
+  </stage>
+  <stage stageid="0b371a34-c03f-46ad-b810-d709fdb3a5bf" name="Anchor2" type="Anchor">
+    <subsheetid>9310e922-1c03-48e9-a675-9a54a0ced445</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="75" y="150" w="10" h="10" />
+    <onsuccess>46841e4b-6c97-42e1-99ac-3b6782800994</onsuccess>
+  </stage>
+  <stage stageid="62f960db-9300-42e9-afff-8439253d131c" name="Not Match Loop Start" type="LoopStart">
+    <subsheetid>7a17f455-b27a-402c-8c15-d519120e9753</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="15" y="-60" />
+    <onsuccess>7cfba79e-4242-4fa8-8cbf-43785f2d2c77</onsuccess>
+    <groupid>e9b4168f-50f4-4c6c-b316-9a5a0a945798</groupid>
+    <looptype>ForEach</looptype>
+    <loopdata>Not Match Group</loopdata>
+  </stage>
+  <stage stageid="400fdb7d-3861-4d24-bcf6-045839efdc4b" name="Not Match Loop End" type="LoopEnd">
+    <subsheetid>7a17f455-b27a-402c-8c15-d519120e9753</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="15" y="45" />
+    <onsuccess>a4085a30-8e30-46ba-8c11-35b09ac9850d</onsuccess>
+    <groupid>e9b4168f-50f4-4c6c-b316-9a5a0a945798</groupid>
+  </stage>
+  <stage stageid="d3dc32f8-13ab-47cd-82fe-788f34de2b87" name="Match Group" type="Collection">
+    <display x="-195" y="105" />
+    <datatype>collection</datatype>
+    <private />
+    <alwaysinit />
+    <collectioninfo>
+      <field name="Name" type="text" />
+      <field name="Email" type="text" />
+    </collectioninfo>
+  </stage>
+  <stage stageid="50494477-e1c1-469e-bdc8-635546bebdd6" name="Not Match Group" type="Collection">
+    <display x="-195" y="60" />
+    <datatype>collection</datatype>
+    <private />
+    <alwaysinit />
+    <collectioninfo>
+      <field name="Name" type="text" />
+      <field name="Email" type="text" />
+    </collectioninfo>
+  </stage>
+  <stage stageid="5a9b6bb0-9494-4a88-ab2a-2538cdea9e7a" name="Not Match Group" type="Collection">
+    <subsheetid>7a17f455-b27a-402c-8c15-d519120e9753</subsheetid>
+    <display x="165" y="-60" />
+    <datatype>collection</datatype>
+    <private />
+    <alwaysinit />
+    <collectioninfo>
+      <field name="Name" type="text" />
+      <field name="Email" type="text" />
+    </collectioninfo>
+  </stage>
+  <stage stageid="7cfba79e-4242-4fa8-8cbf-43785f2d2c77" name="MS Outlook Email VBO::Send Email" type="Action">
+    <subsheetid>7a17f455-b27a-402c-8c15-d519120e9753</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="15" y="-15" />
+    <inputs>
+      <input type="text" name="To" friendlyname="To" narrative="Mandatory. Any alphanumeric value allowed. Single Recipient = &quot;Name1@emaill.com&quot;; Multi Recipient = &quot;Name1@emaill.com; Name2@email.com&quot;" expr="[Not Match Group.Email]" />
+      <input type="text" name="CC" friendlyname="CC" narrative="Optional. Any alphanumeric value allowed. Single Recipient = &quot;Name1@emaill.com&quot;; Multi Recipient = &quot;Name1@emaill.com; Name2@email.com&quot;. Default blank" expr="" />
+      <input type="text" name="BCC" friendlyname="BCC" narrative="Optional. Any alphanumeric value allowed. Single Recipient = &quot;Name1@emaill.com&quot;; Multi Recipient = &quot;Name1@emaill.com; Name2@email.com&quot;. Default blank" expr="" />
+      <input type="text" name="Subject" friendlyname="Subject" narrative="Optional. Any alphanumeric value allowed." expr="&quot;Not Matched Email&quot;" />
+      <input type="text" name="Message" friendlyname="Message" narrative="Optional, HTML or plain text" expr="&quot;Dear &quot;&amp;[Not Match Group.Name]&amp;&quot; your email is not following the best practice &quot;&amp;[Not Match Group.Email]" />
+      <input type="text" name="Attachments" friendlyname="Attachments" narrative="Optional, Semicolon--separated file paths. Default blank." expr="" />
+      <input type="flag" name="IsHTML" friendlyname="IsHTML" narrative="Optional. True or False, default to True" expr="" />
+      <input type="number" name="Sensitivity" friendlyname="Sensitivity" narrative="Optional. An integer between 0 and 3, default to 0." expr="" />
+      <input type="number" name="Importance" friendlyname="Importance" narrative="Optional. An integer between 0 and 2 default to 1." expr="" />
+      <input type="text" name="Account Display Name" friendlyname="Account Display Name" narrative="Optional. DisplayName of the email account. Default account is used if omitted." expr="" />
+    </inputs>
+    <onsuccess>400fdb7d-3861-4d24-bcf6-045839efdc4b</onsuccess>
+    <resource object="MS Outlook Email VBO" action="Send Email" />
+  </stage>
+  <stage stageid="e26bbe3f-da1d-4496-9a75-208a1bc8d068" name="Page 3" type="SubSheetInfo">
+    <subsheetid>5fceb649-0e06-4f2e-9938-11b77f1ab73e</subsheetid>
+    <display x="-195" y="-105" w="150" h="90" />
+  </stage>
+  <stage stageid="ad083e29-ec96-4280-a167-d5d1b7a1ea26" name="Start" type="Start">
+    <subsheetid>5fceb649-0e06-4f2e-9938-11b77f1ab73e</subsheetid>
+    <display x="15" y="-150" />
+    <onsuccess>759acc99-8a9b-4ce6-a00a-45f892302a7d</onsuccess>
+  </stage>
+  <stage stageid="a9bc9a88-cd0e-4656-81c9-0a9337a8c0e6" name="End" type="End">
+    <subsheetid>5fceb649-0e06-4f2e-9938-11b77f1ab73e</subsheetid>
+    <display x="15" y="225" />
+  </stage>
+  <stage stageid="58fc74ab-cbbd-468f-b564-b2293e63e3e1" name="MS Excel VBO::Set Cell Value" type="Action">
+    <subsheetid>5fceb649-0e06-4f2e-9938-11b77f1ab73e</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="15" y="135" />
+    <inputs>
+      <input type="number" name="handle" friendlyname="handle" narrative="The integer handle identifying the instance on which the required cell value should be set. The default of zero indicates the currently active instance." expr="[R-handle]" />
+      <input type="text" name="Cell Reference" friendlyname="Cell Reference" narrative="The reference on the speficied sheet identifying the cell which should be set." expr="[Data.States]" />
+      <input type="text" name="Value" friendlyname="Value" narrative="The value to which the specified cell should be set." expr="[State]" />
+    </inputs>
+    <onsuccess>e2fa576e-8197-47a8-8399-4e823fa09e05</onsuccess>
+    <resource object="MS Excel VBO" action="Set Cell Value" />
+  </stage>
+  <stage stageid="759acc99-8a9b-4ce6-a00a-45f892302a7d" name="MS Excel VBO::Create Instance" type="Action">
+    <subsheetid>5fceb649-0e06-4f2e-9938-11b77f1ab73e</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="15" y="-105" />
+    <inputs>
+      <input type="flag" name="Enable Events" friendlyname="Enable Events" narrative="Flag to indicate that events should be enabled / disabled on the attached instance - defaulted to True" expr="" />
+    </inputs>
+    <outputs>
+      <output type="number" name="handle" friendlyname="handle" narrative="An integer which can be used to identify the created instance in subsequent actions" stage="R-handle" />
+    </outputs>
+    <onsuccess>892a1e37-1fd3-447e-ade2-ceaff6893664</onsuccess>
+    <resource object="MS Excel VBO" action="Create Instance" />
+  </stage>
+  <stage stageid="892a1e37-1fd3-447e-ade2-ceaff6893664" name="MS Excel VBO::Open Workbook" type="Action">
+    <subsheetid>5fceb649-0e06-4f2e-9938-11b77f1ab73e</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="15" y="-60" />
+    <inputs>
+      <input type="number" name="handle" friendlyname="handle" narrative="The integer handle identifying the instance on which the required workbook should be opened. The default of zero indicates the currently active instance." expr="[R-handle]" />
+      <input type="text" name="File name" friendlyname="File name" narrative="The path and name of the file which should be opened." expr="[File Name]" />
+    </inputs>
+    <outputs>
+      <output type="text" name="Workbook Name" friendlyname="Workbook Name" narrative="The name used by Excel to identify the workbook - usually this is the file name (without the path)." stage="R-Workbook Name" />
+    </outputs>
+    <onsuccess>91d780c7-1573-4d83-af62-f0cc7711ee92</onsuccess>
+    <resource object="MS Excel VBO" action="Open Workbook" />
+  </stage>
+  <stage stageid="2556f023-b924-4d67-adb1-53ed30dd57a4" name="Loop Start1" type="LoopStart">
+    <subsheetid>5fceb649-0e06-4f2e-9938-11b77f1ab73e</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="15" y="30" />
+    <onsuccess>4205cb16-5b60-4a14-870c-875284306ed5</onsuccess>
+    <groupid>cb64e407-f2d9-445f-852c-1808e7bb5d31</groupid>
+    <looptype>ForEach</looptype>
+    <loopdata>
+    </loopdata>
+  </stage>
+  <stage stageid="e2fa576e-8197-47a8-8399-4e823fa09e05" name="Loop End1" type="LoopEnd">
+    <subsheetid>5fceb649-0e06-4f2e-9938-11b77f1ab73e</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="15" y="180" />
+    <onsuccess>a9bc9a88-cd0e-4656-81c9-0a9337a8c0e6</onsuccess>
+    <groupid>cb64e407-f2d9-445f-852c-1808e7bb5d31</groupid>
+  </stage>
+  <stage stageid="4205cb16-5b60-4a14-870c-875284306ed5" name="Amount States::Amount State" type="Action">
+    <subsheetid>5fceb649-0e06-4f2e-9938-11b77f1ab73e</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="15" y="75" />
+    <inputs>
+      <input type="number" name="Amount" friendlyname="Amount" expr="[Data.Amount]" />
+    </inputs>
+    <outputs>
+      <output type="text" name="State" friendlyname="State" stage="State" />
+    </outputs>
+    <onsuccess>58fc74ab-cbbd-468f-b564-b2293e63e3e1</onsuccess>
+    <resource object="Amount States" action="Amount State" />
+  </stage>
+  <stage stageid="048b3a65-385a-4f66-9df5-43ee0e91e795" name="R-handle" type="Data">
+    <subsheetid>5fceb649-0e06-4f2e-9938-11b77f1ab73e</subsheetid>
+    <display x="-180" y="15" />
+    <datatype>number</datatype>
+    <initialvalue />
+    <private />
+    <alwaysinit />
+  </stage>
+  <stage stageid="cfe728a5-c211-44f6-bd7e-1c601f18f908" name="R-Workbook Name" type="Data">
+    <subsheetid>5fceb649-0e06-4f2e-9938-11b77f1ab73e</subsheetid>
+    <display x="-180" y="60" />
+    <datatype>text</datatype>
+    <initialvalue />
+    <private />
+    <alwaysinit />
+  </stage>
+  <stage stageid="5b58ffe0-d874-4a5f-89a4-a6847e61a9c2" name="Data" type="Collection">
+    <subsheetid>5fceb649-0e06-4f2e-9938-11b77f1ab73e</subsheetid>
+    <display x="-180" y="105" />
+    <datatype>collection</datatype>
+    <alwaysinit />
+  </stage>
+  <stage stageid="17cef469-bd75-4cda-99f4-2d09580c055e" name="File Name" type="Data">
+    <subsheetid>5fceb649-0e06-4f2e-9938-11b77f1ab73e</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="-180" y="150" />
+    <datatype>text</datatype>
+    <initialvalue />
+    <private />
+    <alwaysinit />
+  </stage>
+  <stage stageid="ab2fdf4d-2e58-4f74-9bb5-31925635b91e" name="File Name" type="Data">
+    <subsheetid>5fceb649-0e06-4f2e-9938-11b77f1ab73e</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="-180" y="195" />
+    <datatype>text</datatype>
+    <initialvalue xml:space="preserve">C:\Users\mahmo\Downloads\Odd-Even.xlsx</initialvalue>
+    <private />
+    <alwaysinit />
+  </stage>
+  <stage stageid="91d780c7-1573-4d83-af62-f0cc7711ee92" name="Show" type="Action">
+    <subsheetid>5fceb649-0e06-4f2e-9938-11b77f1ab73e</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="15" y="-15" />
+    <inputs>
+      <input type="number" name="handle" friendlyname="handle" narrative="The integer handle identifying the instance which should have its window displayed. The default of zero indicates the currently active instance." expr="[R-handle]" />
+    </inputs>
+    <onsuccess>2556f023-b924-4d67-adb1-53ed30dd57a4</onsuccess>
+    <resource object="MS Excel VBO" action="Show" />
+  </stage>
+</process>
