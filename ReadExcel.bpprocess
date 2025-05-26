@@ -1,0 +1,234 @@
+﻿<process name="Assignment1" version="1.0" bpversion="7.2.1.7446" narrative="Read excel file and save it as collection.&#xD;&#xA;After that to validate the value of the profit if more or less the 10000.&#xD;&#xA;And save them in two Different collection one for the Low profit and one for the high profit.&#xD;&#xA;Don’t use filter action, in the collection VBO." byrefcollection="true" processrunningmessage="" disableversioning="false" preferredid="395b7566-00fc-4290-b23b-f9824879ee72">
+  <view>
+    <camerax>2</camerax>
+    <cameray>-92</cameray>
+    <zoom version="2">1.25</zoom>
+  </view>
+  <preconditions />
+  <endpoint narrative="" />
+  <subsheet subsheetid="edc11ea5-a2c5-4132-b1e5-bc5dc6f63307" type="Normal" published="False">
+    <name>Categorize</name>
+    <view>
+      <camerax>0</camerax>
+      <cameray>59</cameray>
+      <zoom version="2">1.25</zoom>
+    </view>
+  </subsheet>
+  <stage stageid="c5b7b62a-0423-4b78-b91f-a83ea4826689" name="Start" type="Start">
+    <display x="75" y="-210" />
+    <onsuccess>a6fc2e46-b750-4688-805d-dc54b3c1fecb</onsuccess>
+  </stage>
+  <stage stageid="43192d55-e592-4e2d-89b9-5389b3065302" name="End" type="End">
+    <display x="75" y="90" />
+  </stage>
+  <stage stageid="bc130bfe-e9b2-4ba2-b374-7012fe13ed1a" name="Stage1" type="ProcessInfo">
+    <display x="-195" y="-105" w="150" h="90" />
+  </stage>
+  <stage stageid="72f6c121-7bee-4db5-a5ee-47766f7acbdf" name="Data Set" type="Collection">
+    <display x="255" y="-75" />
+    <datatype>collection</datatype>
+    <alwaysinit />
+    <collectioninfo>
+      <field name="Merchant" type="text" />
+      <field name="ID" type="number" />
+      <field name="Profit" type="number" />
+    </collectioninfo>
+  </stage>
+  <stage stageid="a6fc2e46-b750-4688-805d-dc54b3c1fecb" name="Create Instance" type="Action">
+    <loginhibit onsuccess="true" />
+    <display x="75" y="-165" />
+    <inputs>
+      <input type="flag" name="Enable Events" friendlyname="Enable Events" narrative="Flag to indicate that events should be enabled / disabled on the attached instance - defaulted to True" expr="" />
+    </inputs>
+    <outputs>
+      <output type="number" name="handle" friendlyname="handle" narrative="An integer which can be used to identify the created instance in subsequent actions" stage="handle" />
+    </outputs>
+    <onsuccess>378f40d0-1556-468a-87a4-53741565d56f</onsuccess>
+    <resource object="MS Excel VBO" action="Create Instance" />
+  </stage>
+  <stage stageid="46733713-8cf5-4920-bc4b-f83429882036" name="handle" type="Data">
+    <display x="255" y="-195" />
+    <datatype>number</datatype>
+    <initialvalue />
+    <private />
+    <alwaysinit />
+  </stage>
+  <stage stageid="378f40d0-1556-468a-87a4-53741565d56f" name="Open WorkBook" type="Action">
+    <loginhibit onsuccess="true" />
+    <display x="75" y="-120" />
+    <inputs>
+      <input type="number" name="handle" friendlyname="handle" narrative="The integer handle identifying the instance on which the required workbook should be opened. The default of zero indicates the currently active instance." expr="[handle]" />
+      <input type="text" name="File name" friendlyname="File name" narrative="The path and name of the file which should be opened." expr="&quot;F:\My learnings\RPA\Assignments\A1\File001.xlsx&quot;" />
+    </inputs>
+    <outputs>
+      <output type="text" name="Workbook Name" friendlyname="Workbook Name" narrative="The name used by Excel to identify the workbook - usually this is the file name (without the path)." stage="Workbook Name" />
+    </outputs>
+    <onsuccess>6e80f2a5-c490-47bf-8f5b-a7fbdfbc28f9</onsuccess>
+    <resource object="MS Excel VBO" action="Open Workbook" />
+  </stage>
+  <stage stageid="0e206ac7-729b-4c16-9676-71d140e549dd" name="Workbook Name" type="Data">
+    <display x="255" y="-135" />
+    <datatype>text</datatype>
+    <initialvalue />
+    <private />
+    <alwaysinit />
+  </stage>
+  <stage stageid="6e80f2a5-c490-47bf-8f5b-a7fbdfbc28f9" name="Get Worksheet as a Collection" type="Action">
+    <loginhibit onsuccess="true" />
+    <display x="75" y="-75" />
+    <inputs>
+      <input type="number" name="handle" friendlyname="handle" narrative="The integer handle identifying the instance on which the worksheet which should be retrieved resides. The default of zero indicates the currently active instance." expr="[handle]" />
+      <input type="text" name="Workbook Name" friendlyname="Workbook Name" narrative="The name of the workbook which contains the sheet required. The default empty text indicates the currently active workbook on the specified instance." expr="[Workbook Name]" />
+      <input type="text" name="Worksheet Name" friendlyname="Worksheet Name" narrative="The name of the worksheet within the specified workbook which should be written to a collection. The default empty text indicates the currently active worksheet within the specified workbook." expr="" />
+    </inputs>
+    <outputs>
+      <output type="collection" name="Data" friendlyname="Data" narrative="The collection containing the data from the specified worksheet - the column IDs will be gleaned from the first row on the sheet being retrieved." stage="Data Set" />
+    </outputs>
+    <onsuccess>3b6c1c9b-b756-4524-a381-1af1a29e18df</onsuccess>
+    <resource object="MS Excel VBO" action="Get Worksheet As Collection" />
+  </stage>
+  <stage stageid="3b6c1c9b-b756-4524-a381-1af1a29e18df" name="Close All Instances" type="Action">
+    <loginhibit onsuccess="true" />
+    <display x="75" y="-15" />
+    <onsuccess>4ae6c7a2-890b-4623-b1bb-330f70f2490c</onsuccess>
+    <resource object="MS Excel VBO" action="Close All Instances" />
+  </stage>
+  <stage stageid="edb54bd1-cc1c-4194-bc9b-67b16ea033b8" name="Categorize" type="SubSheetInfo">
+    <subsheetid>edc11ea5-a2c5-4132-b1e5-bc5dc6f63307</subsheetid>
+    <display x="-195" y="-105" w="150" h="90" />
+  </stage>
+  <stage stageid="2f7cbbe0-7977-4f4e-bdfd-fd84db3285c9" name="Start" type="Start">
+    <subsheetid>edc11ea5-a2c5-4132-b1e5-bc5dc6f63307</subsheetid>
+    <display x="15" y="-105" />
+    <onsuccess>9ff637c3-692f-4aec-9056-2674a8f57edc</onsuccess>
+  </stage>
+  <stage stageid="e3f9b9a7-04d3-4a0b-b2d7-3c539ccfec75" name="End" type="End">
+    <subsheetid>edc11ea5-a2c5-4132-b1e5-bc5dc6f63307</subsheetid>
+    <display x="15" y="240" />
+    <outputs>
+      <output type="collection" name="Low Profit Data" stage="Low Profit Data" />
+      <output type="collection" name="High Profit Data" stage="High Profit Data" />
+    </outputs>
+  </stage>
+  <stage stageid="9ff637c3-692f-4aec-9056-2674a8f57edc" name="Data Set Loop Start" type="LoopStart">
+    <subsheetid>edc11ea5-a2c5-4132-b1e5-bc5dc6f63307</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="15" y="-45" />
+    <onsuccess>e939fdd8-12d8-4b8c-a73a-bcb21f529fac</onsuccess>
+    <groupid>22acfbd0-3bb5-4ecf-8ec4-10f44f5f4f6c</groupid>
+    <looptype>ForEach</looptype>
+    <loopdata>Data Set</loopdata>
+  </stage>
+  <stage stageid="70ce6a53-a53e-4f93-ab90-43479a86d93b" name="Data Set Loop End" type="LoopEnd">
+    <subsheetid>edc11ea5-a2c5-4132-b1e5-bc5dc6f63307</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="15" y="180" />
+    <onsuccess>e3f9b9a7-04d3-4a0b-b2d7-3c539ccfec75</onsuccess>
+    <groupid>22acfbd0-3bb5-4ecf-8ec4-10f44f5f4f6c</groupid>
+  </stage>
+  <stage stageid="e939fdd8-12d8-4b8c-a73a-bcb21f529fac" name="&lt; 10000 ?" type="Decision">
+    <subsheetid>edc11ea5-a2c5-4132-b1e5-bc5dc6f63307</subsheetid>
+    <display x="15" y="0" />
+    <decision expression="[Data Set.Profit]&lt;10000" />
+    <ontrue>0742d336-0d9f-4b43-9cd3-263c765c7ebd</ontrue>
+    <onfalse>7d7dfc44-21ff-4f47-9f70-626eca948c8f</onfalse>
+  </stage>
+  <stage stageid="0742d336-0d9f-4b43-9cd3-263c765c7ebd" name="Low Profit" type="Action">
+    <subsheetid>edc11ea5-a2c5-4132-b1e5-bc5dc6f63307</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="-30" y="60" />
+    <inputs>
+      <input type="text" name="Collection Name" friendlyname="Collection Name" narrative="The name of the collection to act upon" expr="&quot;Low Profit Data&quot;" />
+    </inputs>
+    <onsuccess>74f71c3b-98e9-4c2a-9769-f5a4ec380ef9</onsuccess>
+    <resource object="Blueprism.AutomateProcessCore.clsCollectionActions" action="Add Row" />
+  </stage>
+  <stage stageid="7d7dfc44-21ff-4f47-9f70-626eca948c8f" name="High Profit" type="Action">
+    <subsheetid>edc11ea5-a2c5-4132-b1e5-bc5dc6f63307</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="75" y="60" />
+    <inputs>
+      <input type="text" name="Collection Name" friendlyname="Collection Name" narrative="The name of the collection to act upon" expr="&quot;High Profit Data&quot;" />
+    </inputs>
+    <onsuccess>a87599e2-68f4-40fc-9801-921fefdcaf7a</onsuccess>
+    <resource object="Blueprism.AutomateProcessCore.clsCollectionActions" action="Add Row" />
+  </stage>
+  <stage stageid="5ae83f4e-a927-4869-987b-d501ad7627be" name="Low Profit Data" type="Collection">
+    <subsheetid>edc11ea5-a2c5-4132-b1e5-bc5dc6f63307</subsheetid>
+    <display x="195" y="-60" />
+    <datatype>collection</datatype>
+    <private />
+    <alwaysinit />
+    <collectioninfo>
+      <field name="Merchant" type="text" />
+      <field name="ID" type="number" />
+      <field name="Profit" type="number" />
+    </collectioninfo>
+  </stage>
+  <stage stageid="d32dde83-d02f-4ce3-8e25-ecb926cf6dee" name="High Profit Data" type="Collection">
+    <subsheetid>edc11ea5-a2c5-4132-b1e5-bc5dc6f63307</subsheetid>
+    <display x="195" y="-15" />
+    <datatype>collection</datatype>
+    <private />
+    <alwaysinit />
+    <collectioninfo>
+      <field name="Merchant" type="text" />
+      <field name="ID" type="number" />
+      <field name="Profit" type="number" />
+    </collectioninfo>
+  </stage>
+  <stage stageid="4ae6c7a2-890b-4623-b1bb-330f70f2490c" name="Categorize" type="SubSheet">
+    <loginhibit onsuccess="true" />
+    <display x="75" y="45" />
+    <outputs>
+      <output type="collection" name="Low Profit Data" friendlyname="Low Profit Data" stage="Low Profit Data" />
+      <output type="collection" name="High Profit Data" friendlyname="High Profit Data" stage="High Profit Data" />
+    </outputs>
+    <onsuccess>43192d55-e592-4e2d-89b9-5389b3065302</onsuccess>
+    <processid>edc11ea5-a2c5-4132-b1e5-bc5dc6f63307</processid>
+  </stage>
+  <stage stageid="1a61d46e-2fde-4894-97fc-07d8450e6773" name="Low Profit Data" type="Collection">
+    <display x="-165" y="0" />
+    <datatype>collection</datatype>
+    <private />
+    <alwaysinit />
+    <collectioninfo>
+      <field name="Merchant" type="text" />
+      <field name="ID" type="number" />
+      <field name="Profit" type="number" />
+    </collectioninfo>
+  </stage>
+  <stage stageid="afd904f8-c72c-488f-8943-06d8449d992e" name="High Profit Data" type="Collection">
+    <display x="-165" y="45" />
+    <datatype>collection</datatype>
+    <private />
+    <alwaysinit />
+    <collectioninfo>
+      <field name="Merchant" type="text" />
+      <field name="ID" type="number" />
+      <field name="Profit" type="number" />
+    </collectioninfo>
+  </stage>
+  <stage stageid="a87599e2-68f4-40fc-9801-921fefdcaf7a" name="Add Data to High Profit Data" type="MultipleCalculation">
+    <subsheetid>edc11ea5-a2c5-4132-b1e5-bc5dc6f63307</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="75" y="120" />
+    <onsuccess>70ce6a53-a53e-4f93-ab90-43479a86d93b</onsuccess>
+    <steps>
+      <calculation expression="[Data Set.Merchant]" stage="High Profit Data.Merchant" />
+      <calculation expression="[Data Set.ID]" stage="High Profit Data.ID" />
+      <calculation expression="[Data Set.Profit]" stage="High Profit Data.Profit" />
+    </steps>
+  </stage>
+  <stage stageid="74f71c3b-98e9-4c2a-9769-f5a4ec380ef9" name="Add Data to LowProfit Data" type="MultipleCalculation">
+    <subsheetid>edc11ea5-a2c5-4132-b1e5-bc5dc6f63307</subsheetid>
+    <loginhibit onsuccess="true" />
+    <display x="-30" y="120" />
+    <onsuccess>70ce6a53-a53e-4f93-ab90-43479a86d93b</onsuccess>
+    <steps>
+      <calculation expression="[Data Set.Merchant]" stage="Low Profit Data.Merchant" />
+      <calculation expression="[Data Set.ID]" stage="Low Profit Data.ID" />
+      <calculation expression="[Data Set.Profit]" stage="Low Profit Data.Profit" />
+    </steps>
+  </stage>
+</process>
