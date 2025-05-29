@@ -1,3 +1,4 @@
 1. Make sure you are using latest adobe acrobat.
 2. Installed required VBOs : (MS outlook email vbp, collection,..etc).
-3. You will find the pdd document for this task.
+3. Download the excel sheet to write on it in "Write To Excel" page.
+4. You will find the pdd document for this task.
